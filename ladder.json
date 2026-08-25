@@ -1,0 +1,16 @@
+{
+  "grade": "B-5",
+  "team": "Greenvale",
+  "rows": [
+    {"pos": 1, "team": "Sunbury", "pts": 10, "w": 73, "l": 59, "pct": 124},
+    {"pos": 2, "team": "St. Vincents", "pts": 10, "w": 80, "l": 66, "pct": 121},
+    {"pos": 3, "team": "Hume", "pts": 8, "w": 54, "l": 22, "pct": 245},
+    {"pos": 4, "team": "Ascot Vale", "pts": 8, "w": 47, "l": 32, "pct": 147},
+    {"pos": 5, "team": "Greenvale", "pts": 6, "w": 67, "l": 62, "pct": 108},
+    {"pos": 6, "team": "Maribyrnong Park", "pts": 2, "w": 48, "l": 65, "pct": 74},
+    {"pos": 7, "team": "Coburg", "pts": 2, "w": 54, "l": 80, "pct": 68},
+    {"pos": 8, "team": "Green Gully", "pts": 2, "w": 39, "l": 76, "pct": 51}
+  ],
+  "caption": "8 teams · Spring 2026 · after Round 3",
+  "updated": "seed-data, not yet auto-refreshed"
+}
