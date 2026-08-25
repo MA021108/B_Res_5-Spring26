@@ -61,6 +61,20 @@
   .hero-round{ font-size:11px; color:var(--accent); font-weight:800; letter-spacing:0.1em; text-transform:uppercase; }
   .hero-date{ font-size:22px; font-weight:800; margin-top:4px; }
   .hero-time{ color:var(--text-muted); font-size:14px; margin-top:2px; }
+  .hero-topline{ display:flex; align-items:flex-start; justify-content:space-between; }
+  .countdown-pill{
+    flex:none; background:var(--surface-2); border:1px solid var(--border); border-radius:20px;
+    padding:6px 12px; font-size:11.5px; font-weight:800; color:var(--accent);
+    text-transform:uppercase; letter-spacing:0.04em; white-space:nowrap;
+  }
+  .weather-chip{
+    display:flex; align-items:center; gap:10px; margin-top:16px;
+    background:var(--surface-2); border:1px solid var(--border); border-radius:12px; padding:11px 14px;
+  }
+  .weather-icon{ font-size:24px; line-height:1; flex:none; }
+  .weather-temps{ font-weight:800; font-size:15px; }
+  .weather-sub{ color:var(--text-muted); font-size:12px; margin-top:1px; }
+  .weather-chip.muted{ color:var(--text-ghost); font-size:12.5px; }
   .hero-row{ display:flex; align-items:center; gap:10px; margin-top:16px; }
   .badge{
     font-size:10.5px; font-weight:800; letter-spacing:0.06em; text-transform:uppercase;
@@ -119,6 +133,37 @@
   .note-card a{ color:var(--accent); }
 
   footer{ text-align:center; color:var(--text-ghost); font-size:11px; padding:10px 20px 0; line-height:1.6; }
+
+  .hero-venue.linked{ text-decoration:underline; text-decoration-color:var(--text-ghost); text-underline-offset:3px; cursor:pointer; }
+  .fx-opp.linked{ text-decoration:underline; text-decoration-color:var(--text-ghost); text-underline-offset:2px; }
+
+  .dir-overlay{
+    position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:30;
+    display:flex; align-items:flex-end; justify-content:center;
+  }
+  .dir-sheet{
+    background:var(--surface); width:100%; max-width:480px; border-radius:18px 18px 0 0;
+    padding:18px 18px 30px; border-top:1px solid var(--border);
+  }
+  .dir-handle{ width:36px; height:4px; background:var(--border); border-radius:2px; margin:0 auto 14px; }
+  .dir-title{ font-size:15px; font-weight:700; }
+  .dir-address{ color:var(--text-muted); font-size:13px; margin-top:3px; margin-bottom:16px; }
+  .dir-btn{
+    display:flex; align-items:center; gap:12px; width:100%; background:var(--surface-2);
+    border:1px solid var(--border); border-radius:12px; padding:14px; margin-bottom:10px;
+    color:var(--text); font-size:14.5px; font-weight:700; text-decoration:none;
+  }
+  .dir-btn:active{ transform:scale(0.98); }
+  .dir-icon{
+    width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center;
+    flex:none; font-size:16px; font-weight:800; color:#fff;
+  }
+  .dir-icon.gmaps{ background:#4285F4; }
+  .dir-icon.waze{ background:#33CCFF; color:#0a2540; }
+  .dir-cancel{
+    width:100%; background:none; border:none; color:var(--text-muted); font-size:14px;
+    font-weight:700; padding:10px; margin-top:4px;
+  }
 </style>
 </head>
 <body>
@@ -168,6 +213,102 @@
   "use strict";
 
   var TEAM = "Greenvale";
+
+  var VENUE_ADDRESSES = {
+    "Maribyrnong Park": "Waverley St & Holmes Rd, Moonee Ponds VIC",
+    "Coburg": "Bell Street, Coburg VIC",
+    "Ascot Vale": "75 Newsom St, Ascot Vale VIC 3032",
+    "Green Gully": "Green Gully Reserve, Green Gully Road, Kealba VIC",
+    "St Vincents": "Rosebank Avenue, Strathmore VIC",
+    "Hume": "225 Marathon Boulevard, Craigieburn VIC",
+    "Sunbury": "Cornish Street, Sunbury VIC"
+  };
+
+  var VENUE_COORDS = {
+    "Greenvale": {lat:-37.6346, lon:144.8690},
+    "Maribyrnong Park": {lat:-37.7611, lon:144.8995},
+    "Coburg": {lat:-37.7480, lon:144.9648},
+    "Ascot Vale": {lat:-37.7749, lon:144.9080},
+    "Green Gully": {lat:-37.7226, lon:144.8247},
+    "St Vincents": {lat:-37.7410, lon:144.9228},
+    "Hume": {lat:-37.5842, lon:144.9033},
+    "Sunbury": {lat:-37.5763, lon:144.7301}
+  };
+
+  var WEATHER_CODES = {
+    0:{icon:"☀️", label:"Clear"}, 1:{icon:"🌤️", label:"Mostly clear"}, 2:{icon:"⛅", label:"Partly cloudy"}, 3:{icon:"☁️", label:"Overcast"},
+    45:{icon:"🌫️", label:"Fog"}, 48:{icon:"🌫️", label:"Fog"},
+    51:{icon:"🌦️", label:"Light drizzle"}, 53:{icon:"🌦️", label:"Drizzle"}, 55:{icon:"🌦️", label:"Heavy drizzle"},
+    61:{icon:"🌧️", label:"Light rain"}, 63:{icon:"🌧️", label:"Rain"}, 65:{icon:"🌧️", label:"Heavy rain"},
+    71:{icon:"❄️", label:"Snow"}, 73:{icon:"❄️", label:"Snow"}, 75:{icon:"❄️", label:"Heavy snow"},
+    80:{icon:"🌦️", label:"Rain showers"}, 81:{icon:"🌦️", label:"Rain showers"}, 82:{icon:"🌧️", label:"Heavy showers"},
+    95:{icon:"⛈️", label:"Thunderstorm"}, 96:{icon:"⛈️", label:"Thunderstorm"}, 99:{icon:"⛈️", label:"Thunderstorm"}
+  };
+
+  function loadWeather(fixture){
+    var chip = document.getElementById("weatherChip");
+    if(!chip) return;
+    var coords = VENUE_COORDS[fixture.venue];
+    if(!coords){ chip.className = "weather-chip muted"; chip.textContent = "No forecast location on file for this venue."; return; }
+    var url = "https://api.open-meteo.com/v1/forecast?latitude="+coords.lat+"&longitude="+coords.lon+
+      "&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weathercode"+
+      "&timezone=Australia%2FMelbourne&forecast_days=16";
+    fetch(url).then(function(r){ if(!r.ok) throw new Error("bad response"); return r.json(); })
+      .then(function(data){
+        var idx = data.daily && data.daily.time ? data.daily.time.indexOf(fixture.date) : -1;
+        if(idx===-1){ chip.className = "weather-chip muted"; chip.textContent = "Forecast opens closer to game day."; return; }
+        var tmax = Math.round(data.daily.temperature_2m_max[idx]);
+        var tmin = Math.round(data.daily.temperature_2m_min[idx]);
+        var pop = data.daily.precipitation_probability_max[idx];
+        var code = data.daily.weathercode[idx];
+        var w = WEATHER_CODES[code] || {icon:"🌡️", label:"—"};
+        chip.className = "weather-chip";
+        chip.innerHTML =
+          '<span class="weather-icon">'+w.icon+'</span>'+
+          '<div><div class="weather-temps">'+tmax+'° / '+tmin+'°</div>'+
+          '<div class="weather-sub">'+w.label+' · '+pop+'% rain chance</div></div>';
+      })
+      .catch(function(){ chip.className = "weather-chip muted"; chip.textContent = "Weather forecast unavailable right now."; });
+  }
+
+  function daysUntil(dateIso, todayIso){
+    var d1 = new Date(dateIso+"T00:00:00");
+    var d2 = new Date(todayIso+"T00:00:00");
+    return Math.round((d1-d2)/86400000);
+  }
+  function countdownLabel(dateIso, todayIso){
+    var n = daysUntil(dateIso, todayIso);
+    if(n===0) return "Today";
+    if(n===1) return "Tomorrow";
+    return n+" days to go";
+  }
+
+  function openDirections(venueName){
+    var address = VENUE_ADDRESSES[venueName];
+    if(!address) return;
+    var encoded = encodeURIComponent(address);
+    var gmapsUrl = "https://www.google.com/maps/search/?api=1&query=" + encoded;
+    var wazeUrl = "https://waze.com/ul?q=" + encoded + "&navigate=yes";
+    var overlay = document.createElement("div");
+    overlay.className = "dir-overlay";
+    overlay.innerHTML =
+      '<div class="dir-sheet">'+
+        '<div class="dir-handle"></div>'+
+        '<div class="dir-title">'+venueName+'</div>'+
+        '<div class="dir-address">'+address+'</div>'+
+        '<a class="dir-btn" href="'+gmapsUrl+'" target="_blank" rel="noopener">'+
+          '<span class="dir-icon gmaps">G</span> Open in Google Maps'+
+        '</a>'+
+        '<a class="dir-btn" href="'+wazeUrl+'" target="_blank" rel="noopener">'+
+          '<span class="dir-icon waze">W</span> Open in Waze'+
+        '</a>'+
+        '<button class="dir-cancel">Cancel</button>'+
+      '</div>';
+    document.body.appendChild(overlay);
+    function close(){ overlay.remove(); }
+    overlay.addEventListener("click", function(e){ if(e.target===overlay) close(); });
+    overlay.querySelector(".dir-cancel").addEventListener("click", close);
+  }
 
   var fixtures = [
     {round:1, date:"2026-08-06", time:"7pm", venue:"Maribyrnong Park", opponent:"Maribyrnong Park", players:["Jim","Dave","Roy","Peter"], out:["Mark","Jamie"], emergency:null},
@@ -250,39 +391,54 @@
   var heroEl = document.getElementById("heroCard");
   if(next){
     var isHome = next.venue === TEAM;
+    var hasAddress = !isHome && VENUE_ADDRESSES[next.venue];
     heroEl.innerHTML =
-      '<div class="hero-round">Round '+next.round+'</div>'+
+      '<div class="hero-topline">'+
+        '<div class="hero-round">Round '+next.round+'</div>'+
+        '<span class="countdown-pill">'+countdownLabel(next.date, todayIso)+'</span>'+
+      '</div>'+
       '<div class="hero-date">'+fmtDate(next.date)+'</div>'+
       '<div class="hero-time">'+next.time+'</div>'+
       '<div class="hero-row">'+
         '<span class="badge '+(isHome?"home":"away")+'">'+(isHome?"Home":"Away")+'</span>'+
-        '<div><div class="hero-venue">'+next.venue+'</div><div class="hero-opp">vs '+next.opponent+'</div></div>'+
+        '<div><div class="hero-venue'+(hasAddress?" linked":"")+'" '+(hasAddress?'id="heroVenueLink"':"")+'>'+next.venue+(hasAddress?" ›":"")+'</div><div class="hero-opp">vs '+next.opponent+'</div></div>'+
       '</div>'+
       '<div class="hero-players">'+
         next.players.map(function(p){ return '<span class="player-chip">'+p+'</span>'; }).join("")+
       '</div>'+
+      '<div class="weather-chip muted" id="weatherChip">Loading forecast…</div>'+
       '<div class="hero-meta">'+
         (next.out && next.out.length ? '<b>Out:</b> '+next.out.join(", ")+'<br>' : '')+
         (next.emergency ? '<b>Emergency:</b> '+next.emergency : '')+
       '</div>';
+    if(hasAddress){
+      document.getElementById("heroVenueLink").addEventListener("click", function(){ openDirections(next.venue); });
+    }
+    loadWeather(next);
   } else {
     heroEl.innerHTML = '<div class="hero-date">Season complete</div><div class="hero-time">No more rounds scheduled.</div>';
   }
 
   var fxListEl = document.getElementById("fixtureList");
-  fxListEl.innerHTML = fixtures.map(function(f){
+  fxListEl.innerHTML = fixtures.map(function(f, idx){
     if(f.special){
       return '<div class="fx-special">'+fmtDateShort(f.date)+' — '+f.special+'</div>';
     }
     var isPast = f.date < todayIso;
     var isNext = next && f.round===next.round;
+    var isAway = f.venue !== TEAM;
+    var hasAddr = isAway && VENUE_ADDRESSES[f.venue];
     var cls = "fx-row" + (isPast?" past":"") + (isNext?" next":"");
     return '<div class="'+cls+'">'+
       '<span class="fx-round mono">'+f.round+'</span>'+
-      '<span class="fx-opp">'+(f.venue===TEAM?"vs ":"@ ")+f.opponent+'</span>'+
+      '<span class="fx-opp'+(hasAddr?" linked":"")+'" '+(hasAddr?'data-venue="'+f.venue+'"':"")+'>'+(isAway?"@ ":"vs ")+f.opponent+'</span>'+
       '<span class="fx-date">'+fmtDateShort(f.date)+'</span>'+
     '</div>';
   }).join("");
+  fxListEl.addEventListener("click", function(e){
+    var el = e.target.closest(".fx-opp.linked");
+    if(el) openDirections(el.dataset.venue);
+  });
   document.getElementById("fixtureToggle").addEventListener("click", function(){
     fxListEl.classList.toggle("open");
     this.textContent = fxListEl.classList.contains("open") ? "Hide full season fixture" : "Show full season fixture";
