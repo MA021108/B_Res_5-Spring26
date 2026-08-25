@@ -1,0 +1,29 @@
+name: Update Ladder
+
+on:
+  schedule:
+    - cron: '0 8 * * *'   # runs daily at 8am UTC (~6-7pm Melbourne, after match nights)
+  workflow_dispatch: {}    # lets you trigger it manually from the Actions tab any time
+
+permissions:
+  contents: write
+
+jobs:
+  update-ladder:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: pip install requests beautifulsoup4
+      - name: Fetch ladder
+        run: python scripts/fetch_ladder.py
+      - name: Commit if changed
+        run: |
+          git config user.name "ladder-bot"
+          git config user.email "actions@github.com"
+          git add ladder.json
+          git diff --quiet --cached || git commit -m "Auto-update ladder"
+          git push
