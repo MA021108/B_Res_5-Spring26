@@ -5,7 +5,7 @@
     {
       "pos": 1,
       "team": "Hume",
-      "pts": 24,
+      "pts": 26,
       "w": 189,
       "l": 102,
       "pct": 185
@@ -13,7 +13,7 @@
     {
       "pos": 2,
       "team": "Ascot Vale",
-      "pts": 20,
+      "pts": 22,
       "w": 173,
       "l": 111,
       "pct": 156
@@ -21,7 +21,7 @@
     {
       "pos": 3,
       "team": "St. Vincents",
-      "pts": 18,
+      "pts": 20,
       "w": 185,
       "l": 164,
       "pct": 113
@@ -29,7 +29,7 @@
     {
       "pos": 4,
       "team": "Sunbury",
-      "pts": 14,
+      "pts": 16,
       "w": 173,
       "l": 167,
       "pct": 104
@@ -37,7 +37,7 @@
     {
       "pos": 5,
       "team": "Green Gully",
-      "pts": 14,
+      "pts": 16,
       "w": 148,
       "l": 179,
       "pct": 83
@@ -53,7 +53,7 @@
     {
       "pos": 7,
       "team": "Coburg",
-      "pts": 6,
+      "pts": 8,
       "w": 146,
       "l": 199,
       "pct": 73
@@ -67,6 +67,6 @@
       "pct": 63
     }
   ],
-  "caption": "35 grades \u00b7 279 teams \u00b7 Spring 2026 \u00b7 after Round 7",
-  "updated": "2026-09-30T14:30:03Z"
+  "caption": "35 grades \u00b7 279 teams \u00b7 Spring 2026 \u00b7 after Round 8",
+  "updated": "2026-10-01T14:59:56Z"
 }
