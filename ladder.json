@@ -5,68 +5,68 @@
     {
       "pos": 1,
       "team": "Ascot Vale",
-      "pts": 34,
-      "w": 275,
-      "l": 167,
-      "pct": 165
+      "pts": 38,
+      "w": 306,
+      "l": 189,
+      "pct": 162
     },
     {
       "pos": 2,
       "team": "Hume",
-      "pts": 34,
-      "w": 278,
-      "l": 176,
-      "pct": 158
+      "pts": 38,
+      "w": 313,
+      "l": 194,
+      "pct": 161
     },
     {
       "pos": 3,
-      "team": "Green Gully",
+      "team": "Sunbury",
       "pts": 24,
-      "w": 226,
-      "l": 253,
-      "pct": 89
+      "w": 271,
+      "l": 286,
+      "pct": 95
     },
     {
       "pos": 4,
-      "team": "St. Vincents",
-      "pts": 20,
-      "w": 238,
-      "l": 231,
-      "pct": 103
+      "team": "Green Gully",
+      "pts": 24,
+      "w": 255,
+      "l": 283,
+      "pct": 90
     },
     {
       "pos": 5,
-      "team": "Sunbury",
+      "team": "St. Vincents",
       "pts": 20,
-      "w": 243,
+      "w": 265,
       "l": 259,
-      "pct": 94
+      "pct": 102
     },
     {
       "pos": 6,
       "team": "Greenvale",
-      "pts": 16,
-      "w": 239,
-      "l": 264,
-      "pct": 91
+      "pts": 20,
+      "w": 269,
+      "l": 293,
+      "pct": 92
     },
     {
       "pos": 7,
       "team": "Maribyrnong Park",
       "pts": 16,
-      "w": 174,
-      "l": 244,
-      "pct": 71
+      "w": 192,
+      "l": 279,
+      "pct": 69
     },
     {
       "pos": 8,
       "team": "Coburg",
       "pts": 12,
-      "w": 215,
-      "l": 294,
+      "w": 237,
+      "l": 325,
       "pct": 73
     }
   ],
   "caption": "35 grades \u00b7 279 teams \u00b7 Spring 2026 \u00b7 after Round 12",
-  "updated": "2026-10-29T14:52:44Z"
+  "updated": "2026-10-30T14:44:57Z"
 }
