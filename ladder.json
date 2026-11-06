@@ -4,69 +4,69 @@
   "rows": [
     {
       "pos": 1,
-      "team": "Ascot Vale",
-      "pts": 38,
-      "w": 306,
-      "l": 189,
-      "pct": 162
-    },
-    {
-      "pos": 2,
       "team": "Hume",
-      "pts": 38,
-      "w": 313,
-      "l": 194,
+      "pts": 42,
+      "w": 347,
+      "l": 215,
       "pct": 161
     },
     {
+      "pos": 2,
+      "team": "Ascot Vale",
+      "pts": 42,
+      "w": 337,
+      "l": 213,
+      "pct": 158
+    },
+    {
       "pos": 3,
-      "team": "Sunbury",
+      "team": "Greenvale",
       "pts": 24,
-      "w": 271,
-      "l": 286,
-      "pct": 95
+      "w": 296,
+      "l": 316,
+      "pct": 94
     },
     {
       "pos": 4,
-      "team": "Green Gully",
+      "team": "Sunbury",
       "pts": 24,
-      "w": 255,
-      "l": 283,
-      "pct": 90
+      "w": 292,
+      "l": 320,
+      "pct": 91
     },
     {
       "pos": 5,
-      "team": "St. Vincents",
-      "pts": 20,
-      "w": 265,
-      "l": 259,
-      "pct": 102
+      "team": "Green Gully",
+      "pts": 24,
+      "w": 279,
+      "l": 314,
+      "pct": 89
     },
     {
       "pos": 6,
-      "team": "Greenvale",
+      "team": "St. Vincents",
       "pts": 20,
-      "w": 269,
-      "l": 293,
-      "pct": 92
+      "w": 288,
+      "l": 286,
+      "pct": 101
     },
     {
       "pos": 7,
+      "team": "Coburg",
+      "pts": 16,
+      "w": 237,
+      "l": 325,
+      "pct": 73
+    },
+    {
+      "pos": 8,
       "team": "Maribyrnong Park",
       "pts": 16,
       "w": 192,
       "l": 279,
       "pct": 69
-    },
-    {
-      "pos": 8,
-      "team": "Coburg",
-      "pts": 12,
-      "w": 237,
-      "l": 325,
-      "pct": 73
     }
   ],
   "caption": "35 grades \u00b7 279 teams \u00b7 Spring 2026 \u00b7 after Round 13",
-  "updated": "2026-11-05T15:59:21Z"
+  "updated": "2026-11-06T15:33:00Z"
 }
